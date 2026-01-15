@@ -40,28 +40,3 @@ Appium Server running (npm install -g appium).
 Android Emulator running (Android 14 / API 34 recommended).
 
 The Sauce Labs Demo App APK installed on the emulator.
-
-Clone the repository:
-
-Bash
-
-git clone https://github.com/YOUR_USERNAME/appium-java-test-framework.git
-cd appium-java-test-framework
-Run tests using Maven:
-
-Bash
-
-mvn clean test
-📝 Example Test Code
-The framework allows writing clean, readable tests:
-
-Java
-
-@Test
-public void successfulLoginTest() {
-    loginPage
-        .enterUsername("bob@example.com")
-        .enterPassword("secret")
-        .clickLogin()
-        .verifyLoginSuccess();
-}
