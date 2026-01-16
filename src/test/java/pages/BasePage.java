@@ -2,6 +2,7 @@ package pages;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.appium.java_client.AppiumDriver;
@@ -50,9 +51,9 @@ public abstract class BasePage {
 
     protected boolean isDisplayed(By locator) {
         try {
-            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(3));
+            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(5));
             return shortWait.until(ExpectedConditions.visibilityOfElementLocated(locator)).isDisplayed();
-        } catch (TimeoutException e) {
+        } catch (TimeoutException | StaleElementReferenceException e) {
             return false;
         }
     }
