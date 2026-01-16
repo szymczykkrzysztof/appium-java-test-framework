@@ -54,6 +54,30 @@ public class LoginTests {
     }
 
     @Test
+    public void userCannotLoginWithFakeCredentials() {
+        loginPage
+                .loginAs(TestUsers.FAKE_USER)
+                .verifyErrorMessageIsDisplayed(true)
+                .verifyErrorMessageContains(ERR_MSG_CREDENTIALS_MISMATCH);
+    }
+
+    @Test
+    public void userCannotLoginWithEmptyLogin() {
+        loginPage
+                .loginAs(TestUsers.EMPTY_USER)
+                .verifyUserNameValidationErrorMessageIsDisplayed(true)
+                .verifyLoginErrorMessage(ERR_MSG_USERNAME_REQUIRED);
+    }
+
+    @Test
+    public void userCannotLoginWithEmptyPassword() {
+        loginPage
+                .loginAs(TestUsers.EMPTY_PASSWORD)
+                .verifyPasswordValidationErrorMessageIsDisplayed(true)
+                .verifyPasswordErrorMessage(ERR_MSG_PASSWORD_REQUIRED);
+    }
+
+    @Test
     public void userCanLoginAndLogout() {
         loginPage
                 .loginAs(TestUsers.BOB)

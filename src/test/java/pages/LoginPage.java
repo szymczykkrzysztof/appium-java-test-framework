@@ -19,6 +19,8 @@ public class LoginPage extends BasePage {
     private final By loginButton = AppiumBy.accessibilityId("Login button");
     private final By errorMessage = AppiumBy.accessibilityId("generic-error-message");
     private final By loginHeader = AppiumBy.accessibilityId("container header");
+    private final By loginValidationErrorMessage = AppiumBy.accessibilityId("Username-error-message");
+    private final By passwordValidationErrorMessage = AppiumBy.accessibilityId("Password-error-message");
 
     @Autowired
     @Lazy
@@ -59,10 +61,36 @@ public class LoginPage extends BasePage {
         return this;
     }
 
+    public LoginPage verifyUserNameValidationErrorMessageIsDisplayed(boolean expectedResult) {
+        assertThat(isDisplayed(loginValidationErrorMessage))
+                .as("Username is required")
+                .isEqualTo(expectedResult);
+        return this;
+    }
+    public LoginPage verifyPasswordValidationErrorMessageIsDisplayed(boolean expectedResult) {
+        assertThat(isDisplayed(passwordValidationErrorMessage))
+                .as("Password is required")
+                .isEqualTo(expectedResult);
+        return this;
+    }
+
+    public LoginPage verifyLoginErrorMessage(String expectedText) {
+        var errorMessageText = getLoginValidationErrorMessageText(loginValidationErrorMessage);
+        assertThat(errorMessageText).isEqualTo(expectedText);
+        return this;
+    }
+
+    public LoginPage verifyPasswordErrorMessage(String expectedText) {
+        var errorMessageText = getLoginValidationErrorMessageText(passwordValidationErrorMessage);
+        assertThat(errorMessageText).isEqualTo(expectedText);
+        return this;
+    }
+
     public void verifyErrorMessageContains(String expectedText) {
         var errorMessageText = getErrorMessageText();
         assertThat(errorMessageText).contains(expectedText);
     }
+
 
     public LoginPage verifyLoginHeaderIsDisplayed() {
         var containerHeader = wait.until(ExpectedConditions.visibilityOfElementLocated(loginHeader));
@@ -75,9 +103,14 @@ public class LoginPage extends BasePage {
         return mainPage;
     }
 
-
     private String getErrorMessageText() {
         WebElement container = wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage));
+        WebElement textElement = container.findElement(AppiumBy.className("android.widget.TextView"));
+        return textElement.getText();
+    }
+
+    private String getLoginValidationErrorMessageText(By locator) {
+        WebElement container = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         WebElement textElement = container.findElement(AppiumBy.className("android.widget.TextView"));
         return textElement.getText();
     }
