@@ -13,7 +13,11 @@ import org.springframework.stereotype.Component;
 public class MainPage extends BasePage {
     private final By openMenuSelector = AppiumBy.accessibilityId("open menu");
     private final By menuItemLogInSelector = AppiumBy.accessibilityId("menu item log in");
+    private final By menuItemLogOutSelector = AppiumBy.accessibilityId("menu item log out");
 
+    @Autowired
+    @Lazy
+    private LogoutPopupPage logoutPopupPage;
 
     @Autowired
     @Lazy
@@ -23,13 +27,20 @@ public class MainPage extends BasePage {
     public MainPage(AppiumDriver driver) {
         super(driver);
     }
+
     public MainPage clickOpenMenu() {
         click(openMenuSelector);
         return this;
     }
+
     public LoginPage clickLogin() {
         click(menuItemLogInSelector);
 
         return loginPage;
+    }
+
+    public LogoutPopupPage clickLogout() {
+        click(menuItemLogOutSelector);
+        return logoutPopupPage;
     }
 }
